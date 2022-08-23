@@ -1,6 +1,10 @@
 from base64 import b64encode
 import string
 import sys
+from binascii import unhexlify
+
+INPUT = "49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f69736f6e6f7573206d757368726f6f6d"
+OUTPUT = "SSdtIGtpbGxpbmcgeW91ciBicmFpbiBsaWtlIGEgcG9pc29ub3VzIG11c2hyb29t"
 
 def string_to_hex(hex_string):
     return hex(int(hex_string, 16))
@@ -16,11 +20,16 @@ def hex_to_base64(hex_str: str):
 
 
 if __name__ == '__main__':
-    input_file = sys.argv[1]
 
-    with open(input_file) as file:
-        hex_str = file.readlines()
-        hex_str = hex_str[0].rstrip()
+    # Gets the raw binary data
+    bytes_data = unhexlify(INPUT)
 
-    hex_to_base64(hex_str)
+    # The .decode just gets rid of the b" at the beginning
+    b64_string = b64encode(bytes_data).decode("utf-8")
+
+    if b64_string == OUTPUT:
+        print("You did it!")
+    else:
+        print("Failure is unacceptable")
+
 
